@@ -1,65 +1,160 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  'https://tdiwozgrrzpmzubulfcq.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkaXdvemdycnpwbXp1YnVsZmNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNzA5ODEsImV4cCI6MjA5MTk0Njk4MX0.fTBwKhRfaPq9fNQdt3rau2qkr2NZNBixNiH217lXS28'
+)
 
 export default function Home() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    
+    const { error } = await supabase
+      .from('waitlist')
+      .insert([{ name, email }])
+
+    if (error) {
+      alert('Something went wrong. Please try again.')
+    } else {
+      setSubmitted(true)
+    }
+    setLoading(false)
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-black text-white">
+
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center text-center px-6 py-32">
+        <h1 className="text-5xl font-bold mb-6">
+          Your business data has the answers.
+          <br />
+          <span className="text-blue-400">We help you find them.</span>
+        </h1>
+        <p className="text-xl text-gray-400 max-w-2xl mb-10">
+          Upload your sales data and get an AI-powered report showing exactly 
+          where you're losing money — in minutes, not months.
+        </p>
+        <a href="#waitlist" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-4 rounded-full text-lg">
+          Join the waitlist
+        </a>
+      </section>
+
+      {/* Problem Section */}
+      <section className="bg-gray-900 px-6 py-24">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            You have data. But do you have clarity?
+          </h2>
+          <p className="text-gray-400 text-lg mb-6">
+            Most business owners have spreadsheets full of numbers but no idea what they mean.
           </p>
+          <div className="grid grid-cols-1 gap-6 mt-10 text-left">
+            <div className="bg-gray-800 p-6 rounded-xl">
+              <p className="text-white font-semibold mb-2">Where is my revenue leaking?</p>
+              <p className="text-gray-400">You know something is off but can't pinpoint it.</p>
+            </div>
+            <div className="bg-gray-800 p-6 rounded-xl">
+              <p className="text-white font-semibold mb-2">What's actually working?</p>
+              <p className="text-gray-400">You're guessing which products or services to push.</p>
+            </div>
+            <div className="bg-gray-800 p-6 rounded-xl">
+              <p className="text-white font-semibold mb-2">What should I do next?</p>
+              <p className="text-gray-400">The data exists. The answers are hidden inside it.</p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Solution Section */}
+      <section className="px-6 py-24">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">How Revela works</h2>
+          <p className="text-gray-400 text-lg mb-16">Three steps. No technical knowledge needed.</p>
+          <div className="grid grid-cols-1 gap-8 text-left">
+            <div className="flex gap-6 items-start">
+              <div className="bg-blue-500 text-white font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">1</div>
+              <div>
+                <p className="text-white font-semibold text-lg mb-1">Upload your data</p>
+                <p className="text-gray-400">CSV, Excel, whatever you have. We handle the rest.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="bg-blue-500 text-white font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">2</div>
+              <div>
+                <p className="text-white font-semibold text-lg mb-1">We analyze it</p>
+                <p className="text-gray-400">Our system cleans, analyzes, and finds what matters using AI and data science.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="bg-blue-500 text-white font-bold text-xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">3</div>
+              <div>
+                <p className="text-white font-semibold text-lg mb-1">Get your report</p>
+                <p className="text-gray-400">Plain English insights. Exact problems. Clear actions to take.</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
-  );
+      </section>
+
+      {/* Waitlist Section */}
+      <section id="waitlist" className="bg-blue-600 px-6 py-24">
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Be the first to get access</h2>
+          <p className="text-blue-100 text-lg mb-10">
+            We're launching soon. Join the waitlist and get early access free.
+          </p>
+          {submitted ? (
+            <div className="bg-white text-blue-600 font-semibold px-8 py-6 rounded-xl text-lg">
+              You're on the list. We'll be in touch soon.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="px-5 py-4 rounded-xl text-black text-lg outline-none"
+              />
+              <input
+                type="email"
+                placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="px-5 py-4 rounded-xl text-black text-lg outline-none"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-black text-white font-semibold px-8 py-4 rounded-xl text-lg hover:bg-gray-900"
+              >
+                {loading ? 'Submitting...' : 'Get early access'}
+              </button>
+            </form>
+          )}
+          <p className="text-blue-200 text-sm mt-6">No spam. Just your access link when we launch.</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black text-center py-8 text-gray-600 text-sm">
+        © 2025 Revela. All rights reserved.
+      </footer>
+
+    </main>
+  )
 }
+
+
