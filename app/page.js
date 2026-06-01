@@ -9,6 +9,8 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
+const APP_URL = 'https://revela-app-neon.vercel.app'
+
 const ticker = ['Revenue Analysis', 'Expense Tracking', 'Strategic Reports', 'Business Health Score', 'Data Science Engine', 'Profit Optimization', 'Revenue Leak Detection', 'Weekly Briefings']
 
 export default function Home() {
@@ -28,7 +30,7 @@ export default function Home() {
     e.preventDefault()
     setLoading(true)
     const { error } = await supabase
-      .from('https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app')
+      .from('waitlist')
       .insert([{ name, email }])
     if (error) {
       alert('Something went wrong. Please try again.')
@@ -170,18 +172,18 @@ export default function Home() {
                 </div>
                 <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
                   {['How it Works', 'Why Revela', 'Early Access'].map((item, i) => (
-                    <a key={i} href={i === 2 ? '#https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app' : `#section${i}`}
+                    <a key={i} href={i === 2 ? '#waitlist' : `#section${i}`}
                       style={{ color: '#9999bb', textDecoration: 'none', fontSize: '14px', fontWeight: '500', transition: 'color 0.2s' }}>
                       {item}
                     </a>
                   ))}
-                  <a href="https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app" style={{
+                  <a href={APP_URL} style={{
                     background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
                     color: '#fff', padding: '10px 22px', borderRadius: '8px',
                     textDecoration: 'none', fontSize: '14px', fontWeight: '700',
                     boxShadow: '0 0 20px #7c3aed44'
                   }}>
-                    https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app
+                    Get Early Access
                   </a>
                 </div>
               </motion.nav>
@@ -232,13 +234,13 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.6 }}
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
                 >
-                  <a href="https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app" className="glow-btn" style={{
+                  <a href={APP_URL} className="glow-btn" style={{
                     background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
                     color: '#fff', padding: '16px 40px', borderRadius: '10px',
                     textDecoration: 'none', fontSize: '16px', fontWeight: '700',
                     display: 'inline-block'
                   }}>
-                    https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app→
+                    Start Your Free Analysis →
                   </a>
                   <p style={{ color: '#4a4a6a', fontSize: '13px' }}>
                     Trusted by founders and business owners · Launching 2025
@@ -450,9 +452,9 @@ export default function Home() {
                 </p>
               </motion.section>
 
-              {/* https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app */}
+              {/* Waitlist */}
               <motion.section
-                id="https://revela-2ex3abfgw-bahmedr6-pngs-projects.vercel.app"
+                id="waitlist"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
